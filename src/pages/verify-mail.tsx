@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../hook/useAuth';
 
 const VerificationPage = () => {
     const {verifiedEmail} = useAuth()
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [loading, _] = useState(false);
   const [token, setToken] = useState('');
 
   useEffect(() => {
