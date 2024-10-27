@@ -1,4 +1,4 @@
-import { FaEdit, FaInstagram, FaTrashAlt, FaYoutube } from "react-icons/fa";
+import { FaEdit, FaInstagram, FaTrashAlt, } from "react-icons/fa";
 import { motion } from "framer-motion"; // Ensure framer-motion is installed
 import { NewsFeed } from "../../types/types";
 
@@ -10,7 +10,6 @@ type NewsFeedCardProps = {
 
 const NewsFeedCard = ({ newsFeed, handleEdit, handleDelete }: NewsFeedCardProps) => {
   // Extracting the first letter from newsFeed details
-  const detailInitial = newsFeed.details.charAt(0).toUpperCase();
 
   const getYoutubeId = (url: string) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;

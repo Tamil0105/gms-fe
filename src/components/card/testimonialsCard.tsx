@@ -1,4 +1,4 @@
-import { FaEdit, FaInstagram, FaStar, FaTrashAlt, FaYoutube } from "react-icons/fa";
+import { FaEdit, FaInstagram, FaStar, FaTrashAlt, } from "react-icons/fa";
 import { motion } from "framer-motion"; // Ensure framer-motion is installed
 import { Testimonial } from "../../types/types";
 
