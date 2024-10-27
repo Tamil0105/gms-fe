@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Custom Scrollbar Styles */
+.custom-scrollbar {
+  overflow-y: auto; /* Enable scrolling */
+}
+
+/* Black Theme Styling */
+.custom-scrollbar {
+  color: #e0e0e0; /* Light text color */
+}
+
+/* Custom Scrollbar for Black Theme */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #333; /* Darker track background */
+  border-radius: 1px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #555; /* Slightly lighter thumb */
+  border-radius: 1px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #777; /* Lighter on hover */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #999; /* Even lighter when active */
+}
+
+/* Firefox scrollbar styling for Black Theme */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #333; /* Thumb and track colors */
+}
+
+
+  
