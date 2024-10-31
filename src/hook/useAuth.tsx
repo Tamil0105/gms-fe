@@ -11,7 +11,7 @@ export function useAuth(){
 				const response = await axios.post('/api/v1/auth/login', loginData);
 				if(response.data.access_token){
 					localStorage.setItem('token', response.data.access_token);
-					navigate('/testimonials'); // Redirect to contacts page
+					navigate('/news-feed'); // Redirect to contacts page
 					// Store token in local storage	
 				}
       

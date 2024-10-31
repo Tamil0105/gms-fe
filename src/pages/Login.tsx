@@ -29,7 +29,7 @@ const Login = () => {
       const response = await login.mutateAsync({ ...formData });
       alert('Login successful');
       localStorage.setItem('token', response.data.token);
-      navigate('/testimonials');
+      navigate('/news-feed');
     } catch (error) {
       console.error('Login error', error);
     } finally {

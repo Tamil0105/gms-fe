@@ -9,6 +9,8 @@ import {
   FaLock,
   FaCheckCircle,
   FaExclamationCircle,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa"; // Importing icons
 import { MdArrowBackIos } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -77,7 +79,7 @@ const SettingsPage: React.FC = () => {
       console.error("Error updating profile:", error);
     },
   });
-
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -164,6 +166,9 @@ const SettingsPage: React.FC = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
   if (isLoading) return <SkeletonLoader />;
   if (isError) return <div>Error loading user data</div>;
 
@@ -238,22 +243,31 @@ const SettingsPage: React.FC = () => {
           </div>
 
           <div className="flex flex-col">
-            <label className="block flex items-center">
-              <FaLock className="mr-2" /> Password
-            </label>
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={`w-full p-2 border rounded-md bg-gray-800 text-white ${
-                errors.password ? "border-red-500" : ""
-              }`}
-            />
-            {errors.password && (
-              <span className="text-red-500 text-sm">{errors.password}</span>
-            )}
-          </div>
+      <label className="block flex items-center">
+        <FaLock className="mr-2" /> Password
+      </label>
+      <div className="relative w-full">
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={`w-full p-2 border rounded-md bg-gray-800 text-white ${
+            errors.password ? "border-red-500" : ""
+          }`}
+        />
+        <button
+          type="button"
+          onClick={togglePasswordVisibility}
+          className="absolute inset-y-0 right-2 flex items-center text-gray-400"
+        >
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+        </button>
+      </div>
+      {errors.password && (
+        <span className="text-red-500 text-sm">{errors.password}</span>
+      )}
+    </div>
 
           <div className="flex flex-col">
             <label className="block flex items-center">
