@@ -1,6 +1,8 @@
 import { InternalAxiosRequestConfig } from 'axios';
 
-const url = "https://api-gms.vercel.app"
+const url = "http://localhost:8080"
+
+// const url = "https://api-gms.vercel.app"
 export const RequestInterceptor = (config: InternalAxiosRequestConfig) => {
 	if (!window.navigator.onLine) {
 		// toast.error('Please check your internet connection, you might be offline.');

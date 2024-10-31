@@ -1,20 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import AuthLayout from './layout/AuthLayout';
 import Contacts from './pages/Contacts';
-import Dashboard from './pages/dashbord';
 import Testimonials from './pages/testimonials';
 import NewsFeedComponent from './pages/newsFeed';
 import SettingsPage from './pages/settingPage';
 import VerificationPage from './pages/verify-mail';
+import ImageUploadCarousel from './pages/imageUploadPage';
+
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/register" element={<Register />} />
+    
           <Route path="/login" element={<Login />} />
           <Route path="/verify-mail" element={<VerificationPage />} />
 
@@ -51,12 +51,20 @@ function App() {
               </AuthLayout>
             }
           />
+           <Route
+            path="/image-carousel"
+            element={
+              <AuthLayout>
+                <ImageUploadCarousel />
+              </AuthLayout>
+            }
+          />
+          
           <Route
             path="/"
             element={
-              <AuthLayout>
-                <Dashboard />
-              </AuthLayout>
+              <Navigate to="/news-feed" replace />
+           
             }
           />
         </Routes>

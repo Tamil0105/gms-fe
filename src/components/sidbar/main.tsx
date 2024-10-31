@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BiNews } from "react-icons/bi";
+import { BiImageAdd, BiNews } from "react-icons/bi";
 import { FiUser, FiLogOut, FiMessageSquare, FiSettings } from "react-icons/fi";
 import { TbArrowBadgeLeft, TbArrowBadgeRight } from "react-icons/tb";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ const Sidebar = ({ unreadCount }: { unreadCount: number }) => {
     { label: "news-feed", icon: <BiNews /> },
     { label: "contacts", icon: <FiUser /> },
     { label: "testimonials", icon: <FiMessageSquare /> },
+    { label: "image-carousel", icon: <BiImageAdd /> },
   ];
 
   // Handle window resize to determine if mobile view

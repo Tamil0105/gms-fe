@@ -43,8 +43,10 @@ export function useContacts() {
   const updateContact = useMutation({
     mutationFn: async ({ ids, isRead }: { ids: number[]; isRead: boolean }) => {
       try {
+        console.log(1)
         const response = await axios.patch(`/api/v1/contacts`, {ids, isRead });
-        return response.data as Contact;
+        console.log(2)
+        return response
       } catch (error) {
         console.error('Error updating contact:', error);
         throw error;
