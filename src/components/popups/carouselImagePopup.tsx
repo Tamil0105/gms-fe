@@ -30,7 +30,7 @@ const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen, loading,upload, on
         return;
       }
 
-      const maxSize = isImage ? 1 * 1024 * 1024 : 50 * 1024 * 1024; // 1 MB for image, 50 MB for video
+      const maxSize = isImage ? 5 * 1024 * 1024 : 50 * 1024 * 1024; // 1 MB for image, 50 MB for video
       if (file.size > maxSize) {
         setError(`File size should be less than ${isImage ? "1 MB" : "50 MB"}`);
         return;
