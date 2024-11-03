@@ -315,6 +315,8 @@ const TestimonialModal: React.FC<ModalProps> = ({
             // File upload section
             <div>
               <FileUploader
+              allowImageUpload={true}
+              allowVideoUpload={true}
                 handleRemoveFile={handleRemoveImage}
                 handleUpdateFile={handleImageChange}
                 handleFileChange={handleImageChange}

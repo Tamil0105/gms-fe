@@ -4,6 +4,7 @@ import { FiUser, FiLogOut, FiMessageSquare, FiSettings } from "react-icons/fi";
 import { TbArrowBadgeLeft, TbArrowBadgeRight } from "react-icons/tb";
 import { useLocation, useNavigate } from "react-router-dom";
 import useSidebarStore from "../../store/sidebar";
+import { PiSuitcaseSimpleLight } from "react-icons/pi";
 
 const Sidebar = ({ unreadCount }: { unreadCount: number }) => {
   const navigate = useNavigate();
@@ -23,6 +24,9 @@ const Sidebar = ({ unreadCount }: { unreadCount: number }) => {
     { label: "contacts", icon: <FiUser /> },
     { label: "testimonials", icon: <FiMessageSquare /> },
     { label: "image-carousel", icon: <BiImageAdd /> },
+    { label: "portfolio", icon: <PiSuitcaseSimpleLight />
+       },
+
   ];
 
   // Handle window resize to determine if mobile view

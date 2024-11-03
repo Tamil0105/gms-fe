@@ -9,9 +9,11 @@ interface ModalProps {
   onClose: () => void;
   onSubmit: (data: {url:string}) => void;
   loading?: boolean;
+  allowImage:boolean
+  allowVideo:boolean
 }
 
-const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen, loading,upload, onClose, onSubmit }) => {
+const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen,allowImage,allowVideo, loading,upload, onClose, onSubmit }) => {
   const { updateFile, uploadFile, deleteFile } = useImageUpload();
   const [imageUrl, setImageUrl] = useState("");
   const [dragging, setDragging] = useState(false);
@@ -78,6 +80,8 @@ const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen, loading,upload, on
             Upload Media
           </h2>
           <FileUploader
+          allowVideoUpload={allowVideo}
+          allowImageUpload={allowImage}
                       handleRemoveFile={handleRemoveImage}
                       handleUpdateFile={handleImageChange}
                       handleFileChange={handleImageChange}
@@ -101,7 +105,7 @@ const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen, loading,upload, on
               type="button"
               onClick={() => onSubmit({ url: imageUrl })}
               className={`bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={loading}
+              disabled={loading||uploadFile.isPending || deleteFile.isPending || updateFile.isPending}
             >
               {loading ? <AiOutlineLoading className="animate-spin" /> : 'Submit'}
             </button>

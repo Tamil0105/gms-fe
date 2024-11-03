@@ -198,11 +198,11 @@ const TablePage: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
 
   const exportToCSV = (contacts: Contact[]) => {
     const csvContent = [
-      ["Name", "Email", "Phone", "Message"],
+      ["Name", "Email", "Message"],
       ...contacts.map((contact) => [
         contact.name,
         contact.email,
-        contact.phone,
+        // contact.phone,
         contact.message,
       ]),
     ]
@@ -232,7 +232,7 @@ const TablePage: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
   const columns = [
     // { key: "profile", title: "Profile", type: "text" },
     { key: "name", title: "User Name", type: "text" },
-    { key: "phone", title: "Contact Number", type: "text" },
+    // { key: "phone", title: "Contact Number", type: "text" },
     { key: "email", title: "Email ID", type: "email" },
     { key: "message", title: "Messages", type: "text" },
   ];

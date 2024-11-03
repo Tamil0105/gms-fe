@@ -2,13 +2,13 @@ import { useState } from "react";
 import { MdDelete, MdViewSidebar } from "react-icons/md";
 import useSidebarStore from "../store/sidebar";
 import CarouselImageUploder from "../components/popups/carouselImagePopup";
-import { useCarousel } from "../hook/useCarousel";
 import toast from "react-hot-toast";
+import { usePortfolio } from "../hook/usePortfolio";
 
 
 
-const ImageUploadCarousel = () => {
-  const { createCarousel, deleteCarousel, getCarousels } = useCarousel();
+const PortFolioPage = () => {
+  const {createPortfolio,deletePortfolio,getportfolio} = usePortfolio()
   const { toggleMobileSidebar, isMobileOpen } = useSidebarStore();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,21 +17,21 @@ const ImageUploadCarousel = () => {
   
 
   const handleCreateOrUpdate = async (data: { url: string }) => {
-    await createCarousel.mutateAsync(data);
+    await createPortfolio.mutateAsync(data);
     setIsModalOpen(false);
   };
 
   const handleImageDelete = async (id: number) => {
     setDeletingId(id);
-    await deleteCarousel.mutateAsync(id);
+    await deletePortfolio.mutateAsync(id);
     toast.success('Successfully deleted');
     setDeletingId(null);
   };
 
   // const data = queryClient.getQueryData(['carousels']) as { id: number; url: string }[];
-  if (getCarousels.isLoading) {
+  if (getportfolio.isLoading) {
     return (
-      <div className="h-full w-full overflow-y-auto scroll-smooth ">
+      <div className="h-screen w-full overflow-y-auto scroll-smooth ">
         <header className="flex sticky justify-between items-center p-2 border-b border-gray-600">
           <h1 className="text-lg font-semibold">News Feed</h1>
           <button
@@ -58,9 +58,9 @@ const ImageUploadCarousel = () => {
   }
 
   // Show error message if there's an error fetching news feeds
-  if (!getCarousels ||getCarousels.isError)
-    return <div>Error: {getCarousels.error.message}</div>;  return (
-    <div className="h-screen  w-full overflow-y-auto scroll-smooth ">
+  if (!getportfolio ||getportfolio.isError)
+    return <div>Error: {getportfolio.error.message}</div>;  return (
+    <div className="h-screen w-full overflow-y-auto scroll-smooth ">
       <header className="flex justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
           <button
@@ -71,25 +71,31 @@ const ImageUploadCarousel = () => {
               <MdViewSidebar className="h-5 w-5" /> {isMobileOpen ? <span>Menu</span> : null}
             </span>
           </button>
-          Carousel Image
+          PortFolio
         </h1>
         <button
           onClick={() => setIsModalOpen(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Add  Carousel Image
+          Add  PortFolio
         </button>
       </header>
-
-      <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+{getportfolio.data==undefined||getportfolio?.data?.length<0?<p>No Data</p>: <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {
-          getCarousels?.data?.map((image, index) => (
+          getportfolio?.data?.map((image, index) => (
             <div key={index} className="relative flex-shrink-0 w-full h-40 md:h-48 lg:h-56">
-              <img
+              {/* <img
                 src={image.url}
                 alt={`Uploaded ${image.id}`}
                 className="w-full h-full object-cover rounded-lg shadow-md"
-              />
+              /> */}
+               <video
+      src={image.url}
+      controls
+      className="w-full h-full object-cover rounded-lg shadow-md"
+    >
+      Your browser does not support the video tag.
+    </video>
               <button
                 onClick={() => handleImageDelete(image.id)}
                 disabled={deletingId === image.id}
@@ -106,12 +112,13 @@ const ImageUploadCarousel = () => {
             </div>
           ))
         }
-      </div>
+      </div>}
+     
       <CarouselImageUploder
-      allowImage={true}
-      allowVideo={false}
+      allowImage={false}
+      allowVideo={true}
        upload={false}
-        loading={createCarousel.isPending}
+        loading={createPortfolio.isPending}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleCreateOrUpdate}
@@ -120,4 +127,4 @@ const ImageUploadCarousel = () => {
   );
 };
 
-export default ImageUploadCarousel;
+export default PortFolioPage;

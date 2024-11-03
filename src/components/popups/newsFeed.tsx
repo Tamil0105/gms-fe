@@ -200,6 +200,7 @@ console.log(form,fileType)
               // File Uploader for Images and Videos
               <div>
                 <FileUploader
+                
                     handleRemoveFile={handleRemoveImage}
                     handleUpdateFile={handleImageChange}
                     handleFileChange={handleImageChange}
@@ -209,9 +210,8 @@ console.log(form,fileType)
                     dragging={dragging}
                     fileUrl={imageUrl}
                     fileType={fileType}
-                    uploaded={!!imageUrl} 
-                    loading={uploadFile.isPending || deleteFile.isPending || updateFile.isPending}
-                    />
+                    uploaded={!!imageUrl}
+                    loading={uploadFile.isPending || deleteFile.isPending || updateFile.isPending} allowImageUpload={true} allowVideoUpload={true}                    />
               </div>
             )}
 
