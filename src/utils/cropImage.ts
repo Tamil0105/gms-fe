@@ -48,7 +48,7 @@ export const getCroppedImg = async (
                 arrayBuffer: function (): Promise<ArrayBuffer> {
                   throw new Error('Function not implemented.');
                 },
-                slice: function (start?: number, end?: number, contentType?: string): Blob {
+                slice: function (): Blob {
                   throw new Error('Function not implemented.');
                 },
                 stream: function (): ReadableStream<Uint8Array> {
