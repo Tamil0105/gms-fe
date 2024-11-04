@@ -1,9 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-type Portfolio = {
-    id: number;
-    url: string;
-  };
+import { PortFolio } from "../types/types";
+
 export function usePortfolio() {
   const queryClient = useQueryClient();
 
@@ -13,7 +11,7 @@ export function usePortfolio() {
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/v1/portfolio`);
-        return response.data as Portfolio[];
+        return response.data as PortFolio[];
       } catch (error) {
         console.error('Error fetching portfolio:', error);
         throw error;
@@ -24,8 +22,8 @@ export function usePortfolio() {
 
   // Create a new carousel item (CREATE)
   const createPortfolio = useMutation({
-    mutationFn: async (newCarousel: Omit<Portfolio, 'id'>) => {
-      const response = await axios.post(`/api/v1/portfolio`, newCarousel);
+    mutationFn: async (newdPortfolio: Omit<PortFolio, 'id'>) => {
+      const response = await axios.post(`/api/v1/portfolio`, newdPortfolio);
       return response.data;
     },
     onSuccess: () => {
@@ -35,8 +33,8 @@ export function usePortfolio() {
 
   // Update a carousel item (UPDATE)
   const updatePortfolio = useMutation({
-    mutationFn: async ({ id, updatedCarousel }: { id: number, updatedCarousel: Omit<Portfolio, 'id'> }) => {
-      const response = await axios.put(`/api/v1/portfolio/${id}`, updatedCarousel);
+    mutationFn: async ({ id, updatedPortfolio }: { id: number, updatedPortfolio: Omit<PortFolio, 'id'> }) => {
+      const response = await axios.put(`/api/v1/portfolio/${id}`, updatedPortfolio);
       return response.data;
     },
     onSuccess: () => {

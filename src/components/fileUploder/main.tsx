@@ -2,6 +2,7 @@ import React from 'react';
 import { BsLink, BsX } from 'react-icons/bs';
 
 interface FileUploaderProps {
+  text?:string
   fileUrl: string | null;
   fileType: string | null;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,7 +32,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   handleUpdateFile,
   allowImageUpload,
   allowVideoUpload,
+  text
 }) => {
+ 
   return (
     <div
       className={`border-2 border-dashed ${
@@ -123,7 +126,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           {!loading ? (
             <label className="bg-teal-600 text-white py-2 px-7 rounded cursor-pointer inline-block">
               <span className="flex items-center gap-2">
-                <BsLink className="h-5 w-5" /> Choose file
+                <BsLink className="h-5 w-5" /> {text?text:"Choose file"}
               </span>
               <input
                 type="file"
@@ -137,7 +140,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           ) : (
             <label className="bg-teal-600/60 text-white py-2 px-7 rounded cursor-not-allowed inline-block">
               <span className="flex items-center gap-2">
-                <BsLink className="h-5 w-5" /> Choose file
+                <BsLink className="h-5 w-5" /> {text?text:"Choose file"}
               </span>
             </label>
           )}

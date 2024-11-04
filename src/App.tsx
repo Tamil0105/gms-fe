@@ -7,7 +7,7 @@ import NewsFeedComponent from './pages/newsFeed';
 import SettingsPage from './pages/settingPage';
 import VerificationPage from './pages/verify-mail';
 import ImageUploadCarousel from './pages/imageUploadPage';
-import PortFolioPage from './pages/portFolio';
+import PortfolioComponent from './pages/portFolio';
 
 
 function App() {
@@ -58,7 +58,7 @@ function App() {
             path="/portfolio"
             element={
               <AuthLayout>
-                <PortFolioPage />
+                <PortfolioComponent />
               </AuthLayout>
             }
           />

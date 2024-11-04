@@ -3,6 +3,7 @@ import axios from "axios";
 type Carousel = {
     id: number;
     url: string;
+    phoneUrl:string
   };
 export function useCarousel() {
   const queryClient = useQueryClient();

@@ -4,6 +4,7 @@ import useSidebarStore from "../store/sidebar";
 import CarouselImageUploder from "../components/popups/carouselImagePopup";
 import { useCarousel } from "../hook/useCarousel";
 import toast from "react-hot-toast";
+import { FaDesktop, FaMobileAlt } from "react-icons/fa";
 
 
 
@@ -12,11 +13,12 @@ const ImageUploadCarousel = () => {
   const { toggleMobileSidebar, isMobileOpen } = useSidebarStore();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   
 
-  const handleCreateOrUpdate = async (data: { url: string }) => {
+  const handleCreateOrUpdate = async (data: { url: string ,phoneUrl:string}) => {
     await createCarousel.mutateAsync(data);
     setIsModalOpen(false);
   };
@@ -33,12 +35,12 @@ const ImageUploadCarousel = () => {
     return (
       <div className="h-full w-full overflow-y-auto scroll-smooth ">
         <header className="flex sticky justify-between items-center p-2 border-b border-gray-600">
-          <h1 className="text-lg font-semibold">News Feed</h1>
+          <h1 className="text-lg font-semibold">Carousel Image</h1>
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Add News Feed
+            Add Carousel Image
           </button>
         </header>
         {/* Skeleton Loader */}
@@ -81,15 +83,44 @@ const ImageUploadCarousel = () => {
         </button>
       </header>
 
-      <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-2 gap-4">
         {
           getCarousels?.data?.map((image, index) => (
             <div key={index} className="relative flex-shrink-0 w-full h-40 md:h-48 lg:h-56">
-              <img
-                src={image.url}
-                alt={`Uploaded ${image.id}`}
-                className="w-full h-full object-cover rounded-lg shadow-md"
-              />
+              <div className="w-full flex gap-2 rounded-xl p-1 border h-full relative">
+      {/* Desktop Image */}
+      <div className="relative w-[70%] h-full">
+        <img
+          src={image.url}
+          alt={`Uploaded ${image.id}`}
+          className="w-full h-full object-cover rounded-lg shadow-md"
+        />
+        {/* Icon and Details Overlay */}
+        <div className="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white p-2 rounded-lg flex items-center gap-2">
+          <FaDesktop className="text-lg" />
+          <div>
+            <p className="text-sm font-semibold">Desktop View</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Phone Image */}
+      <div className="relative w-[30%] h-full">
+        <img
+          src={image.phoneUrl}
+          alt={`Uploaded ${image.id}`}
+          className="w-full h-full object-cover rounded-lg shadow-md"
+        />
+        {/* Icon and Details Overlay */}
+        <div className="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white p-1 rounded-lg flex items-center gap-2">
+          <FaMobileAlt className="text-lg" />
+          <div>
+            <p className="text-sm font-semibold">Phone View</p>
+          </div>
+        </div>
+      </div>
+    </div>
+              
               <button
                 onClick={() => handleImageDelete(image.id)}
                 disabled={deletingId === image.id}

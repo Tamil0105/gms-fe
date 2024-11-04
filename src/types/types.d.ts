@@ -32,6 +32,13 @@ export interface User {
     details: string;
     mediaUrl: string;
   };
+  export type PortFolio = {
+    id: number;
+    date: string;
+    fileType: 'image' | 'video'|'youtube'|'instagram';
+    details: string;
+    mediaUrl: string;
+  };
   export type User = {
     id: number; // User's unique ID
     username: string; // User's username

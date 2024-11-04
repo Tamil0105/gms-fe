@@ -1,25 +1,36 @@
-import React, { useState } from 'react';
-import { AiOutlinePlus, AiOutlineLoading } from 'react-icons/ai';
-import { useImageUpload } from '../../hook/useImageUpload';
-import FileUploader from '../fileUploder/main';
+import React, { useState } from "react";
+import { AiOutlinePlus, AiOutlineLoading } from "react-icons/ai";
+import { useImageUpload } from "../../hook/useImageUpload";
+import FileUploaderWithCropper from "../fileUploder/imageUploderWithCrop";
+import FileUploader from "../fileUploder/main";
 
 interface ModalProps {
   isOpen: boolean;
-  upload:boolean
+  upload: boolean;
   onClose: () => void;
-  onSubmit: (data: {url:string}) => void;
+  onSubmit: (data: { url: string ,phoneUrl:string}) => void;
   loading?: boolean;
-  allowImage:boolean
-  allowVideo:boolean
+  allowImage: boolean;
+  allowVideo: boolean;
 }
 
-const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen,allowImage,allowVideo, loading,upload, onClose, onSubmit }) => {
+const CarouselImageUploder: React.FC<ModalProps> = ({
+  isOpen,
+  allowImage,
+  allowVideo,
+  loading,
+  upload,
+  onClose,
+  onSubmit,
+}) => {
   const { updateFile, uploadFile, deleteFile } = useImageUpload();
   const [imageUrl, setImageUrl] = useState("");
+  const [phoneImageUrl,setPhoneIMage] = useState("")
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const fileType = file.type;
@@ -41,16 +52,23 @@ const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen,allowImage,allowVid
       // Upload file
       const formData = new FormData();
       formData.append("file", file);
-      const res = await uploadFile.mutateAsync({ file: formData, folderKey: "banner-img" });
+      setImageUrl(URL.createObjectURL(file));
+      const res = await uploadFile.mutateAsync({
+        file: formData,
+        folderKey: "banner-img",
+      });
       setImageUrl(res.url);
       setError(null);
-      onSubmit({ url: res.url});
+      // onSubmit({ url: res.url});
     }
   };
 
   const handleRemoveImage = async () => {
-    await deleteFile.mutateAsync({ fileKey: imageUrl.split("/").pop() as any, folderKey: "banner-img" });
-    setImageUrl('');
+    await deleteFile.mutateAsync({
+      fileKey: imageUrl.split("/").pop() as any,
+      folderKey: "banner-img",
+    });
+    setImageUrl("");
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -70,50 +88,88 @@ const CarouselImageUploder: React.FC<ModalProps> = ({ isOpen,allowImage,allowVid
   const handleDragLeave = () => {
     setDragging(false);
   };
+  console.log(upload);
 
-  return (
-    isOpen ? (
-      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-screen overflow-y-auto">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            <AiOutlinePlus className="mr-2 text-lg" />
-            Upload Media
-          </h2>
+  return isOpen ? (
+    <div className="fixed inset-0 text-black flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl max-h-screen overflow-y-auto">
+        <h2 className="text-xl font-semibold mb-4 flex items-center">
+          <AiOutlinePlus className="mr-2 text-lg" />
+          Upload Media
+        </h2>
+        <div className="flex flex-col md:flex-row  gap-2">
+          <FileUploaderWithCropper
+          setPhoneIMage={setPhoneIMage}
+            text="Choose file for Phone view"
+            allowImageUpload={true}
+            allowVideoUpload={false}
+          />
           <FileUploader
-          allowVideoUpload={allowVideo}
-          allowImageUpload={allowImage}
-                      handleRemoveFile={handleRemoveImage}
-                      handleUpdateFile={handleImageChange}
-                      handleFileChange={handleImageChange}
-                      handleDrop={handleDrop}
-                      handleDragOver={handleDragOver}
-                      handleDragLeave={handleDragLeave}
-                      dragging={dragging}
-                      fileUrl={imageUrl}
-                      uploaded={upload}
-                      loading={uploadFile.isPending || deleteFile.isPending || updateFile.isPending} fileType={'image'}          />
-          {error && <p className="text-red-500 text-xs">{error}</p>}
-          <div className="flex justify-end mt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-200 px-3 py-1 rounded mr-2 hover:bg-gray-300"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={() => onSubmit({ url: imageUrl })}
-              className={`bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={loading||uploadFile.isPending || deleteFile.isPending || updateFile.isPending}
-            >
-              {loading ? <AiOutlineLoading className="animate-spin" /> : 'Submit'}
-            </button>
-          </div>
+            text="Choose file for Desktop view"
+            allowVideoUpload={allowVideo}
+            allowImageUpload={allowImage}
+            handleRemoveFile={handleRemoveImage}
+            handleUpdateFile={handleImageChange}
+            handleFileChange={handleImageChange}
+            handleDrop={handleDrop}
+            handleDragOver={handleDragOver}
+            handleDragLeave={handleDragLeave}
+            dragging={dragging}
+            fileUrl={imageUrl}
+            uploaded={imageUrl ? true : false}
+            loading={
+              uploadFile.isPending ||
+              deleteFile.isPending ||
+              updateFile.isPending
+            }
+            fileType={"image"}
+          />
+        </div>
+        {error && <p className="text-red-500 text-xs">{error}</p>}
+        <div className="flex justify-end mt-4">
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              setImageUrl("");
+            }}
+            disabled={
+              loading ||
+              uploadFile.isPending ||
+              deleteFile.isPending ||
+              updateFile.isPending
+            }
+            className={`bg-gray-200 px-3 py-1 rounded mr-2 hover:bg-gray-300  ${  loading ||
+              uploadFile.isPending ||
+              deleteFile.isPending ||
+              updateFile.isPending?"opacity-50 cursor-not-allowed":""}`}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            onClick={() => {
+              onSubmit({ url: imageUrl,phoneUrl:phoneImageUrl });
+              setImageUrl("");
+            }}
+            className={`bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 ${
+              uploadFile.isPending ||
+              deleteFile.isPending ||
+              updateFile.isPending ||!imageUrl||!phoneImageUrl? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={
+              loading ||
+              uploadFile.isPending ||
+              deleteFile.isPending ||
+              updateFile.isPending||!imageUrl||!phoneImageUrl
+            }
+          >
+            {loading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
+          </button>
         </div>
       </div>
-    ) : null
-  );
+    </div>
+  ) : null;
 };
 
 export default CarouselImageUploder;

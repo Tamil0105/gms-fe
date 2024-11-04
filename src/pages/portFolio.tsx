@@ -1,44 +1,57 @@
 import { useState } from "react";
-import { MdDelete, MdViewSidebar } from "react-icons/md";
+import {  PortFolio } from "../types/types";
+import NewsFeedModal from "../components/popups/newsFeed";
+import NewsFeedCard from "../components/card/newsFeedCard";
+import { MdViewSidebar } from "react-icons/md";
 import useSidebarStore from "../store/sidebar";
-import CarouselImageUploder from "../components/popups/carouselImagePopup";
-import toast from "react-hot-toast";
 import { usePortfolio } from "../hook/usePortfolio";
 
-
-
-const PortFolioPage = () => {
-  const {createPortfolio,deletePortfolio,getportfolio} = usePortfolio()
-  const { toggleMobileSidebar, isMobileOpen } = useSidebarStore();
-
+const PortfolioComponent = () => {
+  const { toggleMobileSidebar,isMobileOpen } = useSidebarStore();
+  const {createPortfolio,deletePortfolio,getportfolio,updatePortfolio } =
+    usePortfolio();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [editData, setEditData] = useState<PortFolio | null>(null);
+  const [edit, setEdit] = useState<boolean>(false);
 
-  
 
-  const handleCreateOrUpdate = async (data: { url: string }) => {
-    await createPortfolio.mutateAsync(data);
-    setIsModalOpen(false);
+  const handleCreateOrUpdate = (data: Omit<PortFolio, "id">) => {
+    if (edit&&editData) {
+      updatePortfolio
+        .mutateAsync({ id: editData.id, updatedPortfolio: data })
+        .then(() => {
+          setIsModalOpen(false);
+          setEditData(null); // Reset edit data
+        });
+    } else {
+      createPortfolio.mutateAsync(data).then(() => {
+        setIsModalOpen(false);
+        setEditData(null);
+      });
+    }
   };
 
-  const handleImageDelete = async (id: number) => {
-    setDeletingId(id);
-    await deletePortfolio.mutateAsync(id);
-    toast.success('Successfully deleted');
-    setDeletingId(null);
+  const handleEdit = (newsFeed: PortFolio) => {
+    setEdit(true)
+    setEditData(newsFeed);
+    setIsModalOpen(true);
   };
 
-  // const data = queryClient.getQueryData(['carousels']) as { id: number; url: string }[];
+  const handleDelete = (id: number) => {
+    deletePortfolio.mutate(id);
+  };
+
+  // Show loading skeletons while fetching news feeds
   if (getportfolio.isLoading) {
     return (
-      <div className="h-screen w-full overflow-y-auto scroll-smooth ">
+      <div className="h-full w-full overflow-y-auto scroll-smooth ">
         <header className="flex sticky justify-between items-center p-2 border-b border-gray-600">
-          <h1 className="text-lg font-semibold">News Feed</h1>
+          <h1 className="text-lg font-semibold">PortFolio</h1>
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Add News Feed
+            Add PortFolio
           </button>
         </header>
         {/* Skeleton Loader */}
@@ -59,72 +72,65 @@ const PortFolioPage = () => {
 
   // Show error message if there's an error fetching news feeds
   if (!getportfolio ||getportfolio.isError)
-    return <div>Error: {getportfolio.error.message}</div>;  return (
-    <div className="h-screen w-full overflow-y-auto scroll-smooth ">
-      <header className="flex justify-between items-center p-2 border-b border-gray-600">
+    return <div>Error: {getportfolio.error.message}</div>;
+
+  // Render the list of news feeds
+  return (
+    <div className="h-screen  custom-scrollbar w-full overflow-y-auto scroll-smooth">
+      <header className="flex  justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
-          <button
-            className={`lg:hidden xl:hidden p-2 rounded bg-gray-800 text-white shadow-lg z-50`}
-            onClick={toggleMobileSidebar}
-          >
-            <span className="flex gap-2 items-center justify-center">
-              <MdViewSidebar className="h-5 w-5" /> {isMobileOpen ? <span>Menu</span> : null}
-            </span>
-          </button>
-          PortFolio
+        <button
+          className={`lg:hidden xl:hidden p-2 rounded  bg-gray-800 text-white  shadow-lg z-50`}
+          onClick={() =>{toggleMobileSidebar()}}
+        >
+          <span className="flex gap-2 items-center justify-center ">
+          <MdViewSidebar className="h-5 w-5" /> {isMobileOpen?<span>Menu</span>:null}
+
+          </span>
+        </button>
+        PortFolio
         </h1>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            setEditData({
+              date:'',
+              details:'',
+              fileType:"image",
+              id:0,
+              mediaUrl:""
+            })
+            setIsModalOpen(true)}}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Add  PortFolio
+          Add PortFolio
         </button>
       </header>
-{getportfolio.data==undefined||getportfolio?.data?.length<0?<p>No Data</p>: <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {
-          getportfolio?.data?.map((image, index) => (
-            <div key={index} className="relative flex-shrink-0 w-full h-40 md:h-48 lg:h-56">
-              {/* <img
-                src={image.url}
-                alt={`Uploaded ${image.id}`}
-                className="w-full h-full object-cover rounded-lg shadow-md"
-              /> */}
-               <video
-      src={image.url}
-      controls
-      className="w-full h-full object-cover rounded-lg shadow-md"
-    >
-      Your browser does not support the video tag.
-    </video>
-              <button
-                onClick={() => handleImageDelete(image.id)}
-                disabled={deletingId === image.id}
-                className={`absolute top-2 right-2 ${deletingId === image.id ? 'bg-gray-500' : 'bg-red-500'} text-white p-1 md:p-2 rounded-full hover:bg-red-600`}
-              >
-                {deletingId === image.id ? (
-                  <div className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full text-gray-600" role="status">
-                    <span className="sr-only">Deleting...</span>
-                  </div>
-                ) : (
-                  <MdDelete className="w-4 h-4 md:w-5 md:h-5" />
-                )}
-              </button>
-            </div>
-          ))
-        }
-      </div>}
-     
-      <CarouselImageUploder
-      allowImage={false}
-      allowVideo={true}
-       upload={false}
-        loading={createPortfolio.isPending}
+
+      {/* List of news feeds */}
+      <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {(getportfolio as any)?.data.map((newsFeed:PortFolio) => (
+          <NewsFeedCard
+            key={newsFeed.id}
+            newsFeed={newsFeed}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
+        ))}
+      </div>
+
+      {/* Modal for creating/updating */}
+      <NewsFeedModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditData(null);
+        }}
         onSubmit={handleCreateOrUpdate}
+        initialData={editData}
+        loading={createPortfolio.isPending || updatePortfolio.isPending}
       />
     </div>
   );
 };
 
-export default PortFolioPage;
+export default PortfolioComponent;
