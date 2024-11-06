@@ -1,37 +1,54 @@
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
-import { BsLink, } from "react-icons/bs";
+import { BsLink } from "react-icons/bs";
 import { getCroppedImg } from "../../utils/cropImage";
 import { useImageUpload } from "../../hook/useImageUpload";
+import Tabs from "../Tap/main";
+import { PiDeviceMobile } from "react-icons/pi";
+import { BiDesktop } from "react-icons/bi";
+import { compressImage } from "../../utils/imageCompressor";
 
 interface FileUploaderProps {
   allowImageUpload: boolean;
   allowVideoUpload: boolean;
-  text?:string
-  setPhoneIMage:(value:string) =>  void;
+  text?: string;
+  setPhoneIMage: (value: string) => void;
+  setImageUrl: (value: string) => void;
 }
 
 const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
   allowImageUpload,
   allowVideoUpload,
   setPhoneIMage,
-  text
+  setImageUrl,
+  text,
 }) => {
-   const {  uploadFile, } = useImageUpload();
+  const { uploadFile } = useImageUpload();
   const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [fileUrlDeskTop, setFileUrlDeskTop] = useState<string | null>(null);
+
   const [_, setFileType] = useState<string | null>(null);
-  const [file,setFile] =  useState<File>()
+  const [file1, setFile1] = useState<File>();
+  const [file2, setFile2] = useState<File>();
+
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [dimensions, setDimensions] = useState({ width: 100, height: 200 });
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
-  const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
+  const [dimensions1, setDimensions1] = useState({ width: 350, height: 200 });
+
+  const [croppedAreaPixels1, setCroppedAreaPixels1] = useState<any>(null);
+  const [croppedAreaPixels2, setCroppedAreaPixels2] = useState<any>(null);
+
+  const [croppedImageUrl1, setCroppedImageUrl1] = useState<string | null>(null);
+  const [croppedImageUrl2, setCroppedImageUrl2] = useState<string | null>(null);
+
   const [__, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const handleImageChange = async (
-  ) => {
-    if (file) {
-      const fileType = file.type;
+  const [activeTab, setActiveTab] = useState<number>(0);
+
+  const handleImageChange = async () => {
+    if (file1 && file2) {
+      const fileType = file1.type;
       const isImage = fileType.startsWith("image/");
       const isVideo = fileType.startsWith("video/");
 
@@ -40,33 +57,80 @@ const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
         setError("Only image or video files are allowed");
         return;
       }
-
       const maxSize = isImage ? 5 * 1024 * 1024 : 50 * 1024 * 1024; // 1 MB for image, 50 MB for video
-      if (file.size > maxSize) {
+      if (file1.size > maxSize) {
         setError(`File size should be less than ${isImage ? "1 MB" : "50 MB"}`);
         return;
       }
 
       // Upload file
-      
-      setFileUrl(URL.createObjectURL(file));
-      if (fileUrl && croppedAreaPixels) {
-        const croppedImage = await getCroppedImg(
+      // setFileUrl(URL.createObjectURL(file1));
+      // setFileUrlDeskTop(URL.createObjectURL(file2));
+      console.log(
+        fileUrl,
+        croppedAreaPixels1,
+        croppedAreaPixels2,
+        fileUrlDeskTop
+      );
+
+      if (
+        fileUrl &&
+        croppedAreaPixels1 &&
+        croppedAreaPixels2 &&
+        fileUrlDeskTop
+      ) {
+        const croppedImage1 = await getCroppedImg(
           fileUrl,
-          croppedAreaPixels,
+          croppedAreaPixels1,
           dimensions.width
         );
-        const formData = new FormData();
-      formData.append("file", croppedImage.file);
-      const res = await uploadFile.mutateAsync({
-        file: formData,
-        folderKey: "banner-img",
-      });
-       setFileUrl(res.url);
-       setPhoneIMage(res.url)
-        setCroppedImageUrl(res.url);
+        const croppedImage2 = await getCroppedImg(
+          fileUrlDeskTop,
+          croppedAreaPixels2,
+          dimensions1.width
+        );
+
+        console.log(
+          ` f2size: ${(croppedImage1.file.size / 1024).toFixed(2)} KB`
+        );
+        console.log(
+          ` f1size: ${(croppedImage2.file.size / 1024).toFixed(2)} KB`
+        );
+        const formData1 = new FormData();
+        const formData2 = new FormData();
+
+        formData1.append(
+          "file",
+          await compressImage(croppedImage1.file as any)
+        );
+        formData2.append(
+          "file",
+          await compressImage(croppedImage2.file as any)
+        );
+
+        await uploadFile
+          .mutateAsync({
+            file: formData1,
+            folderKey: "banner-img",
+          })
+          .then((res) => {
+            setFileUrl(res.url);
+            setPhoneIMage(res.url);
+            setCroppedImageUrl1(res.url);
+          });
+        await uploadFile
+          .mutateAsync({
+            file: formData2,
+            folderKey: "banner-img",
+          })
+          .then((res) => {
+            setFileUrlDeskTop(res.url);
+            setImageUrl(res.url);
+            setCroppedImageUrl2(res.url);
+          });
+      } else {
+        setError("crop both device!");
       }
-      setError(null);
       // onSubmit({ url: res.url});
     }
   };
@@ -96,20 +160,25 @@ const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
   const handleDragLeave = () => {
     setDragging(false);
   };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // const compressedBlob =   await compressImage(file)
 
     const url = URL.createObjectURL(file);
     const type = file.type.split("/")[0];
 
+    console.log(` size: ${(file.size / 1024).toFixed(2)} KB`);
     if (
       (type === "image" && allowImageUpload) ||
       (type === "video" && allowVideoUpload)
     ) {
-        setFile(file)
-        setPhoneIMage(url)
+      setFile1(file as any);
+      setFile2(file as any);
+      activeTab == 0 ? setPhoneIMage(url) : setImageUrl(url);
       setFileUrl(url);
+      setFileUrlDeskTop(url);
       setFileType(type);
     } else {
       alert("Unsupported file type");
@@ -117,13 +186,15 @@ const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
   };
 
   const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
-    console.log(croppedArea)
-    
-    setCroppedAreaPixels(croppedAreaPixels);
+    console.log(croppedArea);
+
+    activeTab == 0
+      ? setCroppedAreaPixels1(croppedAreaPixels)
+      : setCroppedAreaPixels2(croppedAreaPixels);
   };
 
   // const showCroppedImage = async () => {
-    
+
   //   if (fileUrl && croppedAreaPixels) {
   //     const croppedImage = await getCroppedImg(
   //       fileUrl,
@@ -136,28 +207,64 @@ const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
   //   }
   // };
 
-  const resetCrop = () => {
-    setCroppedImageUrl(null);
-    setFileUrl(null);
-  };
+  // const resetCrop = () => {
+  //   activeTab == 0 ? setCroppedImageUrl1(null) : setCroppedImageUrl2(null);
+  //   setFileUrl(null);
+  // };
 
+  const tabs = [
+    {
+      title: "Phone",
+      key: "phone",
+      icon: <PiDeviceMobile className="h-5 w-5" />,
+    },
+    {
+      title: "Desktop",
+      key: " desktop",
+      icon: <BiDesktop className="h-5 w-5" />,
+    },
+  ];
   return (
-    <div className={`border-2 border-dashed border-gray-300 p-6 rounded-lg flex flex-col items-center gap-6 text-center w-full max-w-lg mx-auto    dragging ? 'border-teal-500' : 'border-gray-300'
-      }`}>
-   {!fileUrl?   <div className="flex flex-col items-center gap-2"  onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}>
-        <p className="text-gray-700">Drag & Drop file here</p>
-        <p className="text-gray-700 text-lg">or</p>
-      </div>:null}
+    <div
+      className={`border-2 border-dashed border-gray-300 p-3 rounded-lg flex flex-col items-center gap-6 text-center w-full max-w-lg mx-auto    dragging ? 'border-teal-500' : 'border-gray-300'
+      }`}
+    >
       {fileUrl ? (
-        croppedImageUrl ? (
-          <div className="flex flex-col items-center gap-4">
-            <img
-              src={croppedImageUrl}
-              alt="Cropped Preview"
-              className="w-full  max-w-[100%] h-[40vh] rounded-lg shadow-md"
-            />
+        <Tabs
+          showIconsOnly={true}
+          active={activeTab}
+          setActiveTab={setActiveTab}
+          tabs={tabs}
+        />
+      ) : null}
+      {!fileUrl ? (
+        <div
+          className="flex flex-col items-center gap-2"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+        >
+          <p className="text-gray-700">Drag & Drop file here</p>
+          <p className="text-gray-700 text-lg">or</p>
+        </div>
+      ) : null}
+      {fileUrl ? (
+        croppedImageUrl1 && croppedImageUrl2 ? (
+          <div className="flex  items-center gap-4">
+            {activeTab == 0 ? (
+              <img
+                src={croppedImageUrl1}
+                alt="Cropped Preview"
+                className="w-full  max-w-[100%] h-[40vh] rounded-lg shadow-md"
+              />
+            ) : (
+              <img
+                src={croppedImageUrl2}
+                alt="Cropped Preview"
+                className="w-full  max-w-[100%] h-[40vh] rounded-lg shadow-md"
+              />
+            )}
+
             {/* <button
               onClick={resetCrop}
               className="text-teal-600 hover:text-teal-700 flex items-center gap-2"
@@ -167,51 +274,34 @@ const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
           </div>
         ) : (
           <div className="relative h-64 w-full max-w-md rounded-lg overflow-hidden shadow-md">
-            <Cropper
-              image={fileUrl}
-              crop={crop}
-              zoom={zoom}
-              aspect={dimensions.width / dimensions.height}
-              onCropChange={setCrop}
-              onZoomChange={setZoom}
-              onCropComplete={onCropComplete}
-            />
-            <div className="absolute bottom-1 left-1/2 text-sm transform -translate-x-1/2 flex gap-2">
-            <button
-      onClick={handleImageChange}
-      className={`bg-blue-600 text-white px-3 py-1 rounded shadow hover:bg-blue-700 flex-1 ${uploadFile.isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
-      disabled={uploadFile.isPending}
-    >
-      {uploadFile.isPending ? (
-        <span className="flex items-center">
-          <svg
-            className="animate-spin h-5 w-5 mr-2 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z" />
-          </svg>
-          Loading...
-        </span>
-      ) : (
-        'Save'
-      )}
-    </button>
-              <button
-                onClick={resetCrop}
-                className="bg-gray-600 text-white px-3 py-1 rounded shadow hover:bg-gray-700 flex-1"
-              >
-                Reset
-              </button>
-            </div>
+            {activeTab === 0 ? (
+              <Cropper
+                image={fileUrl}
+                crop={crop}
+                zoom={zoom}
+                aspect={dimensions.width / dimensions.height}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            ) : (
+              <Cropper
+                image={fileUrl}
+                crop={crop}
+                zoom={zoom}
+                aspect={dimensions1.width / dimensions1.height}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            )}
           </div>
         )
       ) : (
         <label className="bg-teal-600 text-white py-2 px-7 rounded cursor-pointer inline-block">
           <span className="flex items-center gap-2">
-            <BsLink className="h-5 w-5" />{text?text:"Choose file"} Choose file
+            <BsLink className="h-5 w-5" />
+            {text ? text : "Choose file"}
           </span>{" "}
           <input
             type="file"
@@ -224,20 +314,75 @@ const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
         </label>
       )}
 
-      {fileUrl && !croppedImageUrl && (
+      {fileUrl && (!croppedImageUrl1 || !croppedImageUrl2) && (
         <div className="w-full flex flex-col items-center mt-4 gap-3">
-          <div className="w-full max-w-md px-3 flex flex-col gap-2">
-            <label className="block text-gray-700">Width (px)</label>
-            <input
-              type="range"
-              value={dimensions.width}
-              onChange={(e) =>
-                setDimensions({ ...dimensions, width: Number(e.target.value) })
-              }
-              className="border border-gray-300 rounded px-2 py-1"
-              min={100}
-              max={1000}
-            />
+          <div className="w-full flex  max-w-full  justify-between   gap-3">
+            <div className=" w-full">
+              <label className="block text-gray-700">Width (px)</label>
+              <input
+                type="range"
+                value={activeTab == 0 ? dimensions.width : dimensions1.width}
+                onChange={(e) =>
+                  activeTab == 0
+                    ? setDimensions({
+                        ...dimensions,
+                        width: Number(e.target.value),
+                      })
+                    : setDimensions1({
+                        ...dimensions,
+                        width: Number(e.target.value),
+                      })
+                }
+                className="border w-full border-gray-300 rounded px-2 py-1"
+                min={100}
+                max={1000}
+              />
+            </div>
+            <div className="  text-sm   justify-center items-center flex gap-2">
+              <button
+                onClick={handleImageChange}
+                className={`bg-blue-500 text-white  h-8 ${
+                  uploadFile.isPending ? "w-24" : "w-14"
+                } items-center flex justify-center  rounded shadow hover:bg-blue-600 ${
+                  uploadFile.isPending ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={uploadFile.isPending}
+              >
+                {uploadFile.isPending ? (
+                  <span className="flex text-sm items-center">
+                    <svg
+                      className="animate-spin h-2 w-2 mr-2 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z"
+                      />
+                    </svg>
+                    Loading...
+                  </span>
+                ) : (
+                  "Save"
+                )}
+              </button>
+              {/* <button
+                onClick={resetCrop}
+                className="bg-gray-600 text-white px-3 py-1 rounded shadow hover:bg-gray-700 flex-1"
+              >
+                Reset
+              </button> */}
+            </div>
           </div>
           {/* <div className="w-full max-w-md px-3 flex flex-col gap-2">
             <label className="block text-gray-700">Height (px)</label>
@@ -251,12 +396,16 @@ const FileUploaderWithCropper: React.FC<FileUploaderProps> = ({
           </div> */}
         </div>
       )}
-      <p>{error?error:null}</p>
-     {!fileUrl? <p className="text-gray-900 mt-4">
-        {`Supported formats: ${allowImageUpload ? "PNG, JPEG, JPG" : ""}${
-          allowImageUpload && allowVideoUpload ? ", " : ""
-        }${allowVideoUpload ? "MP4, AVI, MKV, MOV" : ""} up to 5 MB`}
-      </p>:null}
+      {!croppedImageUrl1 && !croppedImageUrl2 ? (
+        <p className="text-red-600">{error ? error : null}</p>
+      ) : null}
+      {!fileUrl ? (
+        <p className="text-gray-900 mt-4">
+          {`Supported formats: ${allowImageUpload ? "PNG, JPEG, JPG" : ""}${
+            allowImageUpload && allowVideoUpload ? ", " : ""
+          }${allowVideoUpload ? "MP4, AVI, MKV, MOV" : ""} up to 5 MB`}
+        </p>
+      ) : null}
     </div>
   );
 };
