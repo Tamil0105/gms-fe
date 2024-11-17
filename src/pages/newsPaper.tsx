@@ -75,7 +75,7 @@
 
 // export default Newspaper;
 
-import React, { useEffect, useState, useRef } from 'react';
+import  { useEffect, useState, useRef } from 'react';
 
 const NewsPaper = () => {
   const [active, setActive] = useState(0);
