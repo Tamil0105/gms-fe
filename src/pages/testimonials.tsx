@@ -6,6 +6,7 @@ import TestimonialCard from "../components/card/testimonialsCard";
 import TestimonialModal from "../components/popups/testimonials";
 import { MdViewSidebar } from "react-icons/md";
 import useSidebarStore from "../store/sidebar";
+import Button from "../components/button/main";
 
 const TestimonialsPage: React.FC = () => {
   const {  toggleMobileSidebar,isMobileOpen } = useSidebarStore();
@@ -62,10 +63,12 @@ const TestimonialsPage: React.FC = () => {
         <h1 className="text-lg font-semibold">News Feed</h1>
         <button
           onClick={() =>{setEditData(null) ;setIsModalOpen(true)}}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blueButton-hover"
         >
          Add New Testimonial  
         </button>
+        <Button needIcon={true} text={"Add  Testimonial"}           onClick={() =>{setEditData(null) ;setIsModalOpen(true)}}
+        />        
       </header>
       {/* Skeleton Loader */}
       <div className="grid  w-full grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -103,7 +106,9 @@ console.log(editData)
           </span>
         </button>
         Testimonials</h1>
-        <button
+        <Button needIcon={true} text={"Add  Testimonial"}           onClick={() =>{setEditData(null) ;setIsModalOpen(true)}}
+        />
+        {/* <button
           onClick={() =>{
             setEditData({
               authorName:"",
@@ -116,9 +121,11 @@ console.log(editData)
             });
             setIsModalOpen(true)
           }}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blue-600"
         >
- Add New Testimonial        </button>
+ Add New Testimonial        </button> */}
+
+ 
       </header>
 
       {/* Modal for adding new testimonial */}

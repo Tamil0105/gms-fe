@@ -180,6 +180,7 @@ import { useContacts } from "../hook/useContacts";
 import { Contact, ContactsData } from "../types/types";
 import Table from "../components/table/main";
 import '../index.css'
+import Button from "../components/button/main";
 
 const TablePage: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
   const { toggleMobileSidebar } = useSidebarStore();
@@ -241,26 +242,29 @@ const TablePage: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
   return (
     <div
       className={`h-screen w-full flex flex-col ${
-        darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
+        darkMode ? "bg-secondary-dark text-white" : "bg-white text-black"
       }`}
     >
       {/* Header */}
       <header className="flex justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
           <button
-            className={`lg:hidden xl:hidden p-2 rounded bg-gray-800 text-white shadow-lg z-50`}
+            className={`lg:hidden xl:hidden p-2 rounded bg-secondary-dark text-white shadow-lg z-50`}
             onClick={toggleMobileSidebar}
           >
             <MdViewSidebar className="h-5 w-5" />
           </button>
           Contacts
         </h1>
-        <button
+        <Button text={"Export"} needIcon={false}                     onClick={() => exportToCSV(data.data.contacts)}
+
+        />
+        {/* <button
           onClick={() => exportToCSV(data.data.contacts)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blueButton-hover"
         >
           Export
-        </button>
+        </button> */}
       </header>
 
       {/* Table Container */}

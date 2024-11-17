@@ -233,7 +233,7 @@ const SettingsPage: React.FC = () => {
               placeholder="Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className={`w-full p-2 border rounded-md bg-gray-800 text-white ${
+              className={`w-full p-2 border rounded-md bg-primary-dark text-white ${
                 errors.phone ? "border-red-500" : ""
               }`}
             />
@@ -252,7 +252,7 @@ const SettingsPage: React.FC = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={`w-full p-2 border rounded-md bg-gray-800 text-white ${
+          className={`w-full p-2 border rounded-md bg-primary-dark text-white ${
             errors.password ? "border-red-500" : ""
           }`}
         />
@@ -279,14 +279,14 @@ const SettingsPage: React.FC = () => {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`w-full p-2 border rounded-md bg-gray-800 text-white ${
+                className={`w-full p-2 border rounded-md bg-primary-dark text-white ${
                   errors.email ? "border-red-500" : ""
                 }`}
               />
               <button
                 onClick={verify_Email}
                 disabled={email === originalEmail} // Disable if email hasn't changed
-                className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
+                className={`bg-blueButton hover:bg-blueButton-hover text-white px-4 py-2 rounded-md ${
                   email === originalEmail ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >

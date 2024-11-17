@@ -43,7 +43,7 @@ const Login = () => {
 
   return (
     <div className={`${isDarkMode ? 'dark' : ''} min-h-screen`}>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="flex justify-center items-center min-h-screen bg-primary-dark dark:bg-gray-900">
         <div className="bg-white dark:bg-gray-800 dark:text-gray-300 p-8 rounded-lg shadow-md w-full max-w-md">
           <h2 className="text-2xl font-bold text-center mb-6 dark:text-white">Login</h2>
           <form onSubmit={handleSubmit} className="space-y-6">

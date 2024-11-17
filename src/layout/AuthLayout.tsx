@@ -33,7 +33,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
   }, [navigate]);
   console.log(contacts)
   return (
-    <div className="flex  bg-gray-900 text-white">
+    <div className="flex  bg-secondary-dark text-white">
       <Sidebar unreadCount={contacts?contacts?.unreadCount:0} />
       {/* Main content */}
       <main className="flex transition-all  w-full  duration-300">

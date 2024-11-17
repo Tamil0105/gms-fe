@@ -5,6 +5,7 @@ import NewsFeedModal from "../components/popups/newsFeed";
 import NewsFeedCard from "../components/card/newsFeedCard";
 import { MdViewSidebar } from "react-icons/md";
 import useSidebarStore from "../store/sidebar";
+import Button from "../components/button/main";
 
 const NewsFeedComponent = () => {
   const { toggleMobileSidebar,isMobileOpen } = useSidebarStore();
@@ -47,12 +48,14 @@ const NewsFeedComponent = () => {
       <div className="h-full w-full overflow-y-auto scroll-smooth ">
         <header className="flex sticky justify-between items-center p-2 border-b border-gray-600">
           <h1 className="text-lg font-semibold">News Feed</h1>
-          <button
+          <Button    needIcon={true}          onClick={() => setIsModalOpen(true)}
+ text={"Add News Feed"}/>
+          {/* <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
             Add News Feed
-          </button>
+          </button> */}
         </header>
         {/* Skeleton Loader */}
         <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -80,7 +83,7 @@ const NewsFeedComponent = () => {
       <header className="flex  justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
         <button
-          className={`lg:hidden xl:hidden p-2 rounded  bg-gray-800 text-white  shadow-lg z-50`}
+          className={`lg:hidden xl:hidden p-2 rounded  bg-primary-dark text-white  shadow-lg z-50`}
           onClick={() =>{toggleMobileSidebar()}}
         >
           <span className="flex gap-2 items-center justify-center ">
@@ -90,7 +93,17 @@ const NewsFeedComponent = () => {
         </button>
           News Feed
         </h1>
-        <button
+        <Button  needIcon={true} text={" Add News Feed"} onClick={() =>{
+          setEditData({
+            date:'',
+            details:'',
+            fileType:"image",
+            id:0,
+            mediaUrl:""
+          })
+          setIsModalOpen(true)
+        } }/>
+        {/* <button
           onClick={() => {
             setEditData({
               date:'',
@@ -100,10 +113,10 @@ const NewsFeedComponent = () => {
               mediaUrl:""
             })
             setIsModalOpen(true)}}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blueButton-hover"
         >
           Add News Feed
-        </button>
+        </button> */}
       </header>
 
       {/* List of news feeds */}

@@ -5,6 +5,7 @@ import NewsFeedCard from "../components/card/newsFeedCard";
 import { MdViewSidebar } from "react-icons/md";
 import useSidebarStore from "../store/sidebar";
 import { usePortfolio } from "../hook/usePortfolio";
+import Button from "../components/button/main";
 
 const PortfolioComponent = () => {
   const { toggleMobileSidebar,isMobileOpen } = useSidebarStore();
@@ -80,7 +81,7 @@ const PortfolioComponent = () => {
       <header className="flex  justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
         <button
-          className={`lg:hidden xl:hidden p-2 rounded  bg-gray-800 text-white  shadow-lg z-50`}
+          className={`lg:hidden xl:hidden p-2 rounded  bg-primary-dark text-white  shadow-lg z-50`}
           onClick={() =>{toggleMobileSidebar()}}
         >
           <span className="flex gap-2 items-center justify-center ">
@@ -90,7 +91,18 @@ const PortfolioComponent = () => {
         </button>
         PortFolio
         </h1>
-        <button
+        <Button needIcon={true} text={"Add PortFolio"} onClick={() =>{
+          setEditData({
+            date:'',
+            details:'',
+            fileType:"image",
+            id:0,
+            mediaUrl:""
+          })
+          
+          setIsModalOpen(true)
+        } }/>
+        {/* <button
           onClick={() => {
             setEditData({
               date:'',
@@ -100,10 +112,10 @@ const PortfolioComponent = () => {
               mediaUrl:""
             })
             setIsModalOpen(true)}}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blueButton-hover"
         >
           Add PortFolio
-        </button>
+        </button> */}
       </header>
 
       {/* List of news feeds */}

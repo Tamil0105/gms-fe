@@ -69,7 +69,7 @@ const Sidebar = ({ unreadCount }: { unreadCount: number }) => {
 
       {/* Sidebar */}
       <div
-       className={`fixed top-0 left-0 h-screen p-5 pt-8 bg-gray-800  transition-all duration-300 ${
+       className={`fixed top-0 left-0 h-screen p-5 pt-8 bg-primary-dark  transition-all duration-300 ${
         isMobileOpen ? 'w-64 z-40 lg:w-[250px]' : isOpen ? "w-64" : "w-20"
       } ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} transition-all duration-300  xl:relative lg:relative flex flex-col justify-between`}
         // className={`h-screen p-5 pt-8 bg-gray-800 ${
@@ -107,8 +107,8 @@ const Sidebar = ({ unreadCount }: { unreadCount: number }) => {
               className={`flex capitalize items-center gap-x-4 p-2 rounded-md cursor-pointer transition-colors duration-300
                 ${
                   activeItem === item.label
-                    ? "bg-gray-700"
-                    : "hover:bg-gray-700"
+                    ? "bg-secondary-light"
+                    : "hover:bg-secondary-light"
                 }
               `}
             >
@@ -178,7 +178,7 @@ const Sidebar = ({ unreadCount }: { unreadCount: number }) => {
               setActiveItem("Logout");
               navigate("/login");
             }}
-            className={`flex items-center gap-x-4 p-2 hover:bg-gray-700 rounded-md cursor-pointer transition-colors duration-300
+            className={`flex items-center gap-x-4 p-2 hover:bg-secondary-light rounded-md cursor-pointer transition-colors duration-300
               ${activeItem === "Logout" ? "bg-gray-700" : ""}
             `}
           >

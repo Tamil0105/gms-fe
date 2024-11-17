@@ -1,6 +1,8 @@
 import { InternalAxiosRequestConfig } from 'axios';
 
-const url = "https://api-gms.vercel.app"
+// const url = "https://api-gms.vercel.app"
+const url ="https://api-gms-theta.vercel.app"
+
 
 // const url = "http://localhost:8080"
 export const RequestInterceptor = (config: InternalAxiosRequestConfig) => {

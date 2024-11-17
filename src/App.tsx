@@ -8,6 +8,7 @@ import SettingsPage from './pages/settingPage';
 import VerificationPage from './pages/verify-mail';
 import ImageUploadCarousel from './pages/imageUploadPage';
 import PortfolioComponent from './pages/portFolio';
+import Newspaper from './pages/newsPaper';
 
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
     
           <Route path="/login" element={<Login />} />
           <Route path="/verify-mail" element={<VerificationPage />} />
+          Newspaper
+          <Route path="/news" element={<Newspaper />} />
 
           {/* Wrap protected routes inside AuthLayout */}
           <Route

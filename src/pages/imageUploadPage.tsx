@@ -5,6 +5,7 @@ import CarouselImageUploder from "../components/popups/carouselImagePopup";
 import { useCarousel } from "../hook/useCarousel";
 import toast from "react-hot-toast";
 import { FaDesktop, FaMobileAlt } from "react-icons/fa";
+import Button from "../components/button/main";
 
 
 
@@ -34,14 +35,18 @@ const ImageUploadCarousel = () => {
   if (getCarousels.isLoading) {
     return (
       <div className="h-full w-full overflow-y-auto scroll-smooth ">
-        <header className="flex sticky justify-between items-center p-2 border-b border-gray-600">
+        <header className="flex sticky justify-between items-center border  p-2  border-gray-600">
           <h1 className="text-lg font-semibold">Carousel Image</h1>
-          <button
+          {/* <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blueButton-hover"
           >
             Add Carousel Image
-          </button>
+          </button> */}
+          <Button  needIcon={true} text={"Add  Carousel Image"} onClick={() =>{
+          
+          setIsModalOpen(true)
+        } }/>
         </header>
         {/* Skeleton Loader */}
         <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -63,10 +68,10 @@ const ImageUploadCarousel = () => {
   if (!getCarousels ||getCarousels.isError)
     return <div>Error: {getCarousels.error.message}</div>;  return (
     <div className="h-screen  w-full overflow-y-auto scroll-smooth ">
-      <header className="flex justify-between items-center p-2 border-b border-gray-600">
+      <header className="flex justify-between items-center p-2 border-b border-secondary-light">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
           <button
-            className={`lg:hidden xl:hidden p-2 rounded bg-gray-800 text-white shadow-lg z-50`}
+            className={`lg:hidden xl:hidden p-2 rounded bg-primary-dark text-white shadow-lg z-50`}
             onClick={toggleMobileSidebar}
           >
             <span className="flex gap-2 items-center justify-center">
@@ -75,12 +80,16 @@ const ImageUploadCarousel = () => {
           </button>
           Carousel Image
         </h1>
-        <button
+        <Button  needIcon={true} text={"Add  Carousel Image"} onClick={() =>{
+          
+          setIsModalOpen(true)
+        } }/>
+        {/* <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blueButton-hover"
         >
           Add  Carousel Image
-        </button>
+        </button> */}
       </header>
 
       <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-2 gap-4">

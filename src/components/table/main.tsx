@@ -94,7 +94,7 @@ const Table: React.FC<TableProps> = ({ columns, data, loading, onCellClick, dark
 
   const renderSkeletonRow = () => {
     return (
-      <tr className={`animate-pulse ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+      <tr className={`animate-pulse ${darkMode ? 'bg-secondary-dark' : 'bg-secondary-light'}`}>
         {extendedColumns.map((_, index) => (
           <td key={index} className="p-2 border-b border-gray-300 text-center">
             <div className="h-4 bg-gray-300 rounded"></div>
@@ -105,8 +105,8 @@ const Table: React.FC<TableProps> = ({ columns, data, loading, onCellClick, dark
   };
 
   return (
-    <div className={`overflow-x-auto scrollbar rounded-lg ${darkMode ? 'bg-gray-800 text-white' : 'bg-white'}`}>
-      <table className={`w-full shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-200'} p-2 rounded-2xl`}>
+    <div className={`overflow-x-auto scrollbar rounded-lg ${darkMode ? 'bg-secondary-dark text-white' : 'bg-white'}`}>
+      <table className={`w-full shadow-lg border ${darkMode ? 'border-secondary-dark' : 'border-secondary-light'} p-2 rounded-2xl`}>
         <thead className={` ${darkMode ? 'bg-gray-700' : 'bg-primary/70'} text-white`}>
           <tr>
             {extendedColumns.map((column, idx) => (
@@ -129,7 +129,7 @@ const Table: React.FC<TableProps> = ({ columns, data, loading, onCellClick, dark
           {loading
             ? Array.from({ length: 10}).map(() => renderSkeletonRow())
             : sortedData.map((row, rowIndex) => (
-                <tr key={rowIndex} className={rowIndex % 2 === 0 ? (darkMode ? 'bg-gray-600 text-white' : 'bg-hoverLight/40') : (darkMode ? 'bg-gray-700' : 'bg-white')}>
+                <tr key={rowIndex} className={rowIndex % 2 === 0 ? (darkMode ? 'bg-primary-dark text-white' : 'bg-hoverLight/40') : (darkMode ? 'bg-gray-700' : 'bg-white')}>
                   {extendedColumns.map((column) => (
                     <td
                       key={column.key}
