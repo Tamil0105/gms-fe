@@ -2,7 +2,6 @@ import { InternalAxiosRequestConfig } from 'axios';
 
 // const url = "https://api-gms.vercel.app"
 
-
 const url ="https://api-gms-theta.vercel.app"
 
 
