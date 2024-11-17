@@ -61,12 +61,12 @@ const TestimonialsPage: React.FC = () => {
     return ( <div className="h-screen  w-full overflow-y-auto scroll-smooth ">
       <header className="flex sticky justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold">News Feed</h1>
-        <button
+        {/* <button
           onClick={() =>{setEditData(null) ;setIsModalOpen(true)}}
           className="bg-blueButton text-white px-4 py-2 rounded hover:bg-blueButton-hover"
         >
          Add New Testimonial  
-        </button>
+        </button> */}
         <Button needIcon={true} text={"Add  Testimonial"}           onClick={() =>{setEditData(null) ;setIsModalOpen(true)}}
         />        
       </header>
