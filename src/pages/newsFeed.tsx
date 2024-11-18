@@ -123,7 +123,7 @@ const NewsFeedComponent = () => {
       <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4 custom-scrollbar w-full overflow-y-auto scroll-smooth h-[90vh]">
         {(getNewsFeeds as any)?.data.map((newsFeed:NewsFeed) => (
           <NewsFeedCard
-          height={"60"}
+          height={60}
             key={newsFeed.id}
             newsFeed={newsFeed}
             handleDelete={handleDelete}
