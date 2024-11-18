@@ -18,12 +18,19 @@ const NewsFeedCard = ({ newsFeed, handleEdit,height, handleDelete }: NewsFeedCar
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
   };
+  const maxDescriptionLength = 50;
+  const toggleExpand = () => setIsExpanded((prev) => !prev);
+
+  const displayText = isExpanded
+    ? newsFeed.details
+    : newsFeed.details.slice(0, maxDescriptionLength) + 
+      (newsFeed.details.length > maxDescriptionLength ? "..." : "");
 
   return (
     <motion.div
     key={newsFeed.id}
-    style={{height:`${height}vh`}}
-    className={`border  border-white border-opacity-30 shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105 bg-gray-700 group`}
+    // style={{height:`${height}vh`}}
+    className={`border  h-[55vh] border-white border-opacity-30 shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105 bg-gray-700 group`}
     whileHover={{ scale: 1.05 }}
   >
     <div className="flex justify-between items-center mb-3">
@@ -32,20 +39,14 @@ const NewsFeedCard = ({ newsFeed, handleEdit,height, handleDelete }: NewsFeedCar
     </div>
 
     {/* Description Section */}
-    <div className="mb-4">
-      <p
-        className={`text-sm text-gray-300 ${
-          isExpanded ? '' : 'line-clamp-3'
-        }`}
-      >
-        {newsFeed.details}
-      </p>
-      {newsFeed.details.length > 100 && (
+     <div className="mb-4">
+      <p className="text-sm text-gray-300">{displayText}</p>
+      {newsFeed.details.length > maxDescriptionLength && (
         <button
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={toggleExpand}
           className="text-blue-500 text-xs mt-2 focus:outline-none hover:underline"
         >
-          {isExpanded ? 'View Less' : 'View More'}
+          {isExpanded ? "View Less" : "View More"}
         </button>
       )}
     </div>
