@@ -30,7 +30,7 @@ const NewsFeedCard = ({ newsFeed, handleEdit,height, handleDelete }: NewsFeedCar
     <motion.div
     key={newsFeed.id}
     // style={{height:`${height}vh`}}
-    className={`border  h-[55vh] border-white border-opacity-30 shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105 bg-gray-700 group`}
+    className={`border  border-white border-opacity-30 shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105 bg-gray-700 group`}
     whileHover={{ scale: 1.05 }}
   >
     <div className="flex justify-between items-center mb-3">

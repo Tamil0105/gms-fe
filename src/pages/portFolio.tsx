@@ -122,7 +122,8 @@ const PortfolioComponent = () => {
       </header>
 
       {/* List of news feeds */}
-      <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4 h-[90vh]  custom-scrollbar w-full overflow-y-auto scroll-smooth">
+      <div className="h-[90vh] custom-scrollbar w-full overflow-y-auto scroll-smooth">
+      <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4   ">
         {(getportfolio as any)?.data.map((newsFeed:PortFolio) => (
           <NewsFeedCard
           height={'50'}
@@ -133,6 +134,8 @@ const PortfolioComponent = () => {
           />
         ))}
       </div>
+      </div>
+  
 
       {/* Modal for creating/updating */}
       <NewsFeedModal
