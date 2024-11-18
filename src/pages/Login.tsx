@@ -95,8 +95,8 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className={`w-full py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 ${
-                isLoading ? 'bg-gray-400' : 'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600'
+              className={`w-full py-2 px-4 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 ${
+                isLoading ? 'bg-gray-400' : 'bg-blueButton hover:bg-blueButton-hover dark:bg-indigo-500 dark:hover:bg-indigo-600'
               }`}
               disabled={isLoading} // Disable button while loading
             >

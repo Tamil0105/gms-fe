@@ -286,7 +286,7 @@ const SettingsPage: React.FC = () => {
               <button
                 onClick={verify_Email}
                 disabled={email === originalEmail} // Disable if email hasn't changed
-                className={`bg-blueButton hover:bg-blueButton-hover text-white px-4 py-2 rounded-md ${
+                className={`bg-blueButton hover:bg-blueButton-hover text-white px-4 py-2 rounded-full ${
                   email === originalEmail ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >

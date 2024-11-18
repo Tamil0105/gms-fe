@@ -6,6 +6,15 @@ export default {
   ],
   theme: {
     extend: {
+      animation: {
+        shine: "shine 1.5s ease-out infinite",
+      },
+      keyframes: {
+        shine: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
       colors: {
         primary: {
             light: '#f5f5f5', // Light gray for light mode

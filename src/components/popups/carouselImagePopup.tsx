@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { AiOutlinePlus, AiOutlineLoading } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import { useImageUpload } from "../../hook/useImageUpload";
 import FileUploaderWithCropper from "../fileUploder/imageUploderWithCrop";
+import Button from "../button/main";
 
 interface ModalProps {
   isOpen: boolean;
@@ -136,14 +137,28 @@ const CarouselImageUploder: React.FC<ModalProps> = ({
               deleteFile.isPending ||
               updateFile.isPending
             }
-            className={`bg-gray-200 px-3 py-1 rounded mr-2 hover:bg-gray-300  ${  loading ||
+            className={`bg-gray-200 px-3 py-1 rounded-full mr-2 hover:bg-gray-300  ${  loading ||
               uploadFile.isPending ||
               deleteFile.isPending ||
               updateFile.isPending?"opacity-50 cursor-not-allowed":""}`}
           >
             Cancel
           </button>
-          <button
+
+          <Button text={"submit"}
+          disabled={    loading ||
+            uploadFile.isPending ||
+            deleteFile.isPending||
+            updateFile.isPending||!imageUrl||!phoneImageUrl}
+          loading ={
+            loading ||
+            uploadFile.isPending ||
+            deleteFile.isPending          }
+           onClick={() => {
+              onSubmit({ url: imageUrl,phoneUrl:phoneImageUrl });
+              setImageUrl("");
+            } } needIcon={false}/>
+          {/* <button
             type="submit"
             onClick={() => {
               onSubmit({ url: imageUrl,phoneUrl:phoneImageUrl });
@@ -162,7 +177,7 @@ const CarouselImageUploder: React.FC<ModalProps> = ({
             }
           >
             {loading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

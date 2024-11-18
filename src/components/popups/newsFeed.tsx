@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { AiOutlineCalendar, AiOutlinePaperClip, AiOutlinePlus, AiOutlineEdit, AiOutlineLoading } from 'react-icons/ai';
+import { AiOutlineCalendar, AiOutlinePaperClip, AiOutlinePlus, AiOutlineEdit } from 'react-icons/ai';
 import { useImageUpload } from '../../hook/useImageUpload';
 import { NewsFeed } from '../../types/types';
 import FileUploader from '../fileUploder/main';
 import CustomDropdown from '../dropdown/main';
 import { FaImage, FaInstagram, FaVideo, FaYoutube } from 'react-icons/fa';
+import Button from '../button/main';
 
 interface ModalProps {
   isOpen: boolean;
@@ -222,17 +223,19 @@ console.log(form,fileType)
               <button
                 type="button"
                 onClick={onClose}
-                className="bg-gray-200 px-3 py-1 rounded mr-2 hover:bg-gray-300"
+                className="bg-gray-200 px-3 py-1 rounded-full mr-2 hover:bg-gray-300"
               >
                 Cancel
               </button>
-              <button
+              <Button text={"Submit"} type="submit" loading={loading} onClick={() =>{} } needIcon={false}/>
+
+              {/* <button
                 type="submit"
                 className={`bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 disabled={loading}
               >
                 {loading ? <AiOutlineLoading className="animate-spin" /> : 'Submit'}
-              </button>
+              </button> */}
             </div>
           </form>
         </div>

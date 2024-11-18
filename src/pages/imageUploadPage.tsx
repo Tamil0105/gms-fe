@@ -35,7 +35,7 @@ const ImageUploadCarousel = () => {
   if (getCarousels.isLoading) {
     return (
       <div className="h-full w-full overflow-y-auto scroll-smooth ">
-        <header className="flex sticky justify-between items-center border  p-2  border-gray-600">
+        <header className="flex sticky justify-between items-center z-20  p-2  border-gray-600">
           <h1 className="text-lg font-semibold">Carousel Image</h1>
           {/* <button
             onClick={() => setIsModalOpen(true)}
