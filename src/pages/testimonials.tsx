@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Testimonial } from "../types/types";
 import { useTestimonials } from "../hook/useTestimnials";
-
 import TestimonialCard from "../components/card/testimonialsCard";
 import TestimonialModal from "../components/popups/testimonials";
 import { MdViewSidebar } from "react-icons/md";
