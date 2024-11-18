@@ -79,7 +79,7 @@ const NewsFeedComponent = () => {
 
   // Render the list of news feeds
   return (
-    <div className="h-screen  custom-scrollbar w-full overflow-y-auto scroll-smooth">
+    <div className="h-screen   w-full overflow-hidden">
       <header className="flex  justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
         <button
@@ -120,9 +120,10 @@ const NewsFeedComponent = () => {
       </header>
 
       {/* List of news feeds */}
-      <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4 custom-scrollbar w-full overflow-y-auto scroll-smooth h-[90vh]">
         {(getNewsFeeds as any)?.data.map((newsFeed:NewsFeed) => (
           <NewsFeedCard
+          height={"60"}
             key={newsFeed.id}
             newsFeed={newsFeed}
             handleDelete={handleDelete}

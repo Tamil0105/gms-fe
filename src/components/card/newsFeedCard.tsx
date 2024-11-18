@@ -5,11 +5,12 @@ import { useState } from "react";
 
 type NewsFeedCardProps = {
   newsFeed: NewsFeed;
+  height:any
   handleDelete: (id: number) => void;
   handleEdit: (newsFeed: NewsFeed) => void; // Function to handle editing
 };
 
-const NewsFeedCard = ({ newsFeed, handleEdit, handleDelete }: NewsFeedCardProps) => {
+const NewsFeedCard = ({ newsFeed, handleEdit,height, handleDelete }: NewsFeedCardProps) => {
   // Extracting the first letter from newsFeed details
   const [isExpanded, setIsExpanded] = useState(false);
   const getYoutubeId = (url: string) => {
@@ -21,7 +22,7 @@ const NewsFeedCard = ({ newsFeed, handleEdit, handleDelete }: NewsFeedCardProps)
   return (
     <motion.div
     key={newsFeed.id}
-    className="border border-white border-opacity-30 shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105 bg-gray-700 group"
+    className={`border h-[${height}vh] border-white border-opacity-30 shadow-lg p-4 rounded-lg transition-transform transform hover:scale-105 bg-gray-700 group`}
     whileHover={{ scale: 1.05 }}
   >
     <div className="flex justify-between items-center mb-3">
@@ -77,7 +78,6 @@ const NewsFeedCard = ({ newsFeed, handleEdit, handleDelete }: NewsFeedCardProps)
           ) : newsFeed.fileType === "youtube" ? (
             <div
               className="relative h-40 rounded-lg overflow-hidden w-full"
-              style={{ paddingBottom: "56.25%" }}
             >
               <iframe
                 className="absolute top-0 left-0 w-full h-full"
@@ -94,7 +94,7 @@ const NewsFeedCard = ({ newsFeed, handleEdit, handleDelete }: NewsFeedCardProps)
     </div>
 
     {/* Action Buttons */}
-    <div className="flex justify-end group mt-4 space-x-2">
+    <div className="flex items-end justify-end w-full right-2 group  absolute  top-3 ">
       <button
         onClick={() => handleEdit(newsFeed)}
         className="text-white p-1 rounded flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"

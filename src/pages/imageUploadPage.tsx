@@ -34,8 +34,8 @@ const ImageUploadCarousel = () => {
   // const data = queryClient.getQueryData(['carousels']) as { id: number; url: string }[];
   if (getCarousels.isLoading) {
     return (
-      <div className="h-full w-full overflow-y-auto scroll-smooth ">
-        <header className="flex sticky justify-between items-center z-20  p-2  border-gray-600">
+      <div className="h-screen w-full overflow-y-hidden ">
+        <header className="flex sticky justify-between items-center   p-2  border-gray-600">
           <h1 className="text-lg font-semibold">Carousel Image</h1>
           {/* <button
             onClick={() => setIsModalOpen(true)}
@@ -67,8 +67,8 @@ const ImageUploadCarousel = () => {
   // Show error message if there's an error fetching news feeds
   if (!getCarousels ||getCarousels.isError)
     return <div>Error: {getCarousels.error.message}</div>;  return (
-    <div className="h-screen  w-full overflow-y-auto scroll-smooth ">
-      <header className="flex justify-between items-center p-2 border-b border-secondary-light">
+    <div className="h-screen overflow-hidden   w-full  ">
+      <header className="flex sticky  justify-between items-center p-2 border-b border-secondary-light">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
           <button
             className={`lg:hidden xl:hidden p-2 rounded bg-primary-dark text-white shadow-lg z-50`}
@@ -92,7 +92,7 @@ const ImageUploadCarousel = () => {
         </button> */}
       </header>
 
-      <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 w-full p-10 sm:grid-cols-2 lg:grid-cols-2 gap-4 overflow-y-auto scroll-smooth custom-scrollbar h-[90vh]">
         {
           getCarousels?.data?.map((image, index) => (
             <div key={index} className="relative flex-shrink-0 w-full h-40 md:h-48 lg:h-56">

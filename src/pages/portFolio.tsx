@@ -80,7 +80,7 @@ const PortfolioComponent = () => {
 
   // Render the list of news feeds
   return (
-    <div className="h-screen  custom-scrollbar w-full overflow-y-auto scroll-smooth">
+    <div className="h-screen  overflow-hidden w-full">
       <header className="flex  justify-between items-center p-2 border-b border-gray-600">
         <h1 className="text-lg font-semibold flex gap-2 items-center md:mb-0">
         <button
@@ -122,9 +122,10 @@ const PortfolioComponent = () => {
       </header>
 
       {/* List of news feeds */}
-      <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-4  h-[90vh] custom-scrollbar w-full overflow-y-auto scroll-smooth">
         {(getportfolio as any)?.data.map((newsFeed:PortFolio) => (
           <NewsFeedCard
+          height={'50'}
             key={newsFeed.id}
             newsFeed={newsFeed}
             handleDelete={handleDelete}
