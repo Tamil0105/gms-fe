@@ -104,32 +104,35 @@ interface Props {
 const Button: React.FC<Props> = ({ text, disabled ,type,needIcon, onClick, loading }) => {
   return (
     <div className="group relative">
-      <button
+    <button
       type={type}
-        onClick={onClick}
-        disabled={loading||disabled}
-        className={`relative flex border items-center justify-center gap-2 px-5 py-2 bg-blueButton group-hover:bg-blueButton-hover text-white font-bold text-sm rounded-full border-3 border-white/30 shadow-md transition-transform duration-300 ease-in-out hover:scale-105 hover:border-white/60 overflow-hidden ${
-          loading ? "opacity-70 cursor-not-allowed" : ""
-        }`}
-      >
-        {/* Loading Spinner */}
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <div className="h-5 w-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
-          </div>
-        ) : (
-          <>
-            {text}
-            {needIcon && <BiPlus className="h-7 w-7" />}
-          </>
-        )}
+      onClick={onClick}
+      disabled={loading || disabled}
+      className={`relative flex border items-center justify-center gap-2 
+        px-5 py-2 bg-blueButton group-hover:bg-blueButton-hover 
+        text-white font-bold text-sm rounded-full border-3 
+        border-white/30 shadow-md transition-transform duration-300 
+        ease-in-out hover:scale-105 hover:border-white/60 overflow-hidden 
+        ${loading ? "opacity-70 cursor-not-allowed" : ""}
+        sm:px-4 sm:py-1.5 sm:text-xs sm:gap-1.5`}     >
+      {/* Loading Spinner */}
+      {loading ? (
+        <div className="flex items-center justify-center">
+          <div className="h-5 w-5 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        <>
+          {text}
+          {needIcon && <BiPlus className="h-7 w-7 sm:h-5 sm:w-5" />} {/* Smaller icon */}
+        </>
+      )}
 
-        {/* Shine effect only on hover */}
-        {!loading && (
-          <div className="absolute inset-0 w-24 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-60 -translate-x-24 group-hover:translate-x-full transition-transform duration-500"></div>
-        )}
-      </button>
-    </div>
+      {/* Shine effect only on hover */}
+      {!loading && (
+        <div className="absolute inset-0 w-24 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-60 -translate-x-24 group-hover:translate-x-full transition-transform duration-500"></div>
+      )}
+    </button>
+  </div>
   );
 };
 
