@@ -10,7 +10,7 @@ type NewsFeedCardProps = {
   handleEdit: (newsFeed: NewsFeed) => void; // Function to handle editing
 };
 
-const NewsFeedCard = ({ newsFeed, handleEdit,height, handleDelete }: NewsFeedCardProps) => {
+const NewsFeedCard = ({ newsFeed, handleEdit, handleDelete }: NewsFeedCardProps) => {
   // Extracting the first letter from newsFeed details
   const [isExpanded, setIsExpanded] = useState(false);
   const getYoutubeId = (url: string) => {
