@@ -43,9 +43,8 @@ const ImageUploadCarousel = () => {
           >
             Add Carousel Image
           </button> */}
-          <Button  needIcon={true} text={"Add  Carousel Image"} onClick={() =>{
+          <Button disabled={true}  needIcon={true} text={"Add  Carousel Image"} onClick={() =>{
           
-          setIsModalOpen(true)
         } }/>
         </header>
         {/* Skeleton Loader */}
