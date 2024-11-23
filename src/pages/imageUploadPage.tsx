@@ -12,7 +12,7 @@ import Button from "../components/button/main";
 const ImageUploadCarousel = () => {
   const { createCarousel, deleteCarousel, getCarousels } = useCarousel();
   const { toggleMobileSidebar, isMobileOpen } = useSidebarStore();
-
+  const [isWarningPopup, setIsWarningPopupOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -81,7 +81,7 @@ const ImageUploadCarousel = () => {
           Carousel Image
         </h1>
         <Button  needIcon={true} text={"Add  Carousel Image"} onClick={() =>{
-          
+          getCarousels?.data?.length==5?setIsWarningPopupOpen(true):
           setIsModalOpen(true)
         } }/>
         {/* <button
@@ -156,6 +156,50 @@ const ImageUploadCarousel = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleCreateOrUpdate}
       />
+      {/* Warning Popup */}
+      {isWarningPopup && (
+       <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-gray-800/70 to-black/80">
+       <div className="relative w-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300 ease-in-out scale-100 hover:scale-105">
+         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-orange-500"></div>
+         
+         <div className="p-8">
+           <div className="flex items-center justify-center mb-6">
+             <div className="bg-red-100 text-red-600 p-4 rounded-full animate-pulse">
+               <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+               </svg>
+             </div>
+           </div>
+     
+           <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+             Upload Limit Reached
+           </h2>
+     
+           <p className="text-center text-gray-600 mb-6 text-base leading-relaxed">
+             You have reached the maximum upload limit of 5 images. 
+             Please remove some existing images before uploading new ones.
+           </p>
+     
+           <div className="flex justify-center space-x-4">
+             <button 
+               onClick={() => setIsWarningPopupOpen(false)}
+               className="px-8 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg 
+               hover:from-red-600 hover:to-orange-600 
+               transition-all duration-300 
+               transform hover:-translate-y-1 
+               shadow-lg hover:shadow-xl 
+               flex items-center space-x-2"
+             >
+               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+               </svg>
+               <span>Understood</span>
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+      )}
     </div>
   );
 };
