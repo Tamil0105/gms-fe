@@ -29,7 +29,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   dragging,
   loading,
   uploaded,
-  handleUpdateFile,
   allowImageUpload,
   allowVideoUpload,
   text
@@ -91,7 +90,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             >
               <BsX className="h-5 w-5" /> Remove File
             </button>
-            {!loading ? (
+            {/* {!loading ? (
               <label className="bg-teal-600 text-white py-2 px-7 rounded cursor-pointer inline-block">
                 <span className="flex items-center gap-2">
                   <BsLink className="h-5 w-5" /> Update File
@@ -111,7 +110,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                   <BsLink className="h-5 w-5" /> Update File
                 </span>
               </label>
-            )}
+            )} */}
           </div>
         </div>
       ) : (
